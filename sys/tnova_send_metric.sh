@@ -1,6 +1,15 @@
 #!/bin/sh
+#
+# virtual Transcoding Unit
+# Author of this file: Marco Beccari
+# Italtel and Universita' degli studi di Milano, 2015-6
+#
+###
+#
 # This script sends metrics to T-NOVA VIM monitoring backend.
 # Current requirements are curl and sed
+#
+###
 
 monitoring_url='http://emonitoring.sisyphus.mnl:8086/'
 monitoring_db='statsdb'
@@ -33,4 +42,3 @@ fi
 
 curl -s -i -XPOST $monitoring_url'write?db='$monitoring_db \
   --data-binary "$1,host=$(instance_uuid) value=$2" > /dev/null
-

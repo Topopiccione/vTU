@@ -1,11 +1,15 @@
 #!/bin/bash
+#
+# virtual Transcoding Unit
+# Author of this file: Marco Beccari
+# Italtel and Universita' degli studi di Milano, 2015-6
+#
 
 source /vTU/sys/vTUsetting
 
 if [ "$1" == "" ]
-then 
+then
   cat $VTUDIR/$VTUSYS/$VTULOGGER
 else
   tail -n $1 $VTUDIR/$VTUSYS/$VTULOGGER
 fi
-

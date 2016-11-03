@@ -1,6 +1,15 @@
 #!/bin/sh
+#
+# virtual Transcoding Unit
+# Author of this file: Marco Beccari
+# Italtel and Universita' degli studi di Milano, 2015-6
+#
+##
+#
 # This script updates the UUID file and collectd and then restarts collectd
 # Current requirements are curl and sed
+#
+##
 
 uuid_file='/etc/collectd/instance_uuid'
 

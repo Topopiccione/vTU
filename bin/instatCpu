@@ -1,3 +1,8 @@
+#
+# virtual Transcoding Unit
+# Author of this file: Marco Beccari
+# Italtel and Universita' degli studi di Milano, 2015-6
+#
 A0=($(sed '2q;d' /proc/stat))
 A1=($(sed '3q;d' /proc/stat))
 A2=($(sed '4q;d' /proc/stat))
@@ -26,4 +31,3 @@ echo $E0
 echo $E1
 echo $E2
 echo $E3
-

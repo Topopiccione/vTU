@@ -1,6 +1,12 @@
 #!/bin/bash
 #
-# vTUrunner  
+# virtual Transcoding Unit
+# Author of this file: Marco Beccari, Alessandro Petrini
+# Italtel and Universita' degli studi di Milano, 2015-6
+#
+##
+#
+# vTUrunner
 #
 ##
 
@@ -11,29 +17,29 @@ source /vTU/sys/vTUsetting
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBCUDA
 
 # DEBUG  - arguments list
-echo $VTUDIR/$VTUBIN/vTUrunner $* 
+echo $VTUDIR/$VTUBIN/vTUrunner $*
 
 if [ "$1" == "" ]
 then
-  $VTUBASEDIR/sys/vTUlogger "Error parameter 1" 
-  exit 501 
+  $VTUBASEDIR/sys/vTUlogger "Error parameter 1"
+  exit 501
 fi
 
 if [ "$2" == "" ]
 then
-  $VTUBASEDIR/sys/vTUlogger "Error parameter 2" 
-  exit 502 
+  $VTUBASEDIR/sys/vTUlogger "Error parameter 2"
+  exit 502
 fi
 
 if [ "$3" == "" ]
 then
-  $VTUBASEDIR/sys/vTUlogger "Error parameter 3" 
-  exit 503 
+  $VTUBASEDIR/sys/vTUlogger "Error parameter 3"
+  exit 503
 fi
 
 if [ "$4" == "" ]
 then
-  $VTUBASEDIR/sys/vTUlogger "Error parameter 4" 
+  $VTUBASEDIR/sys/vTUlogger "Error parameter 4"
   exit 504
 fi
 
@@ -89,7 +95,7 @@ do
   codecAOout=
   codecVbitrate=
   codecAbitrate=
-  
+
   codecVoutSize=
   codecVoutSizeWidth=
   codecVoutSizeHeigth=
@@ -100,23 +106,23 @@ do
 
   if [ "$XMLEXE" == xmlstarlet ]
   then
-    rtspInIp=`$XMLEXE             sel -t -v '/vTU/in/rtsp/ip'                    $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspInPort=`$XMLEXE           sel -t -v '/vTU/in/rtsp/port'                  $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspInStream=`$XMLEXE         sel -t -v '/vTU/in/rtsp/stream'                $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspInTimeout=`$XMLEXE        sel -t -v '/vTU/in/rtsp/timeout'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspOutIp=`$XMLEXE            sel -t -v '/vTU/out'$NROUT'/rtsp/ip'           $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspOutPort=`$XMLEXE          sel -t -v '/vTU/out'$NROUT'/rtsp/port'         $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspOutStream=`$XMLEXE        sel -t -v '/vTU/out'$NROUT'/rtsp/stream'       $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    localInStream=`$XMLEXE        sel -t -v '/vTU/in/local/stream'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    localOutStream=`$XMLEXE       sel -t -v '/vTU/out'$NROUT'/local/stream'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    localOutOverWr=`$XMLEXE       sel -t -v '/vTU/out'$NROUT'/local/overwrite'   $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecFin=`$XMLEXE             sel -t -v '/vTU/in/codec/container'            $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecVin=`$XMLEXE             sel -t -v '/vTU/in/codec/vcodec'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecAin=`$XMLEXE             sel -t -v '/vTU/in/codec/acodec'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecFout=`$XMLEXE            sel -t -v '/vTU/out'$NROUT'/codec/container'   $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecVout=`$XMLEXE            sel -t -v '/vTU/out'$NROUT'/codec/vcodec'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecAout=`$XMLEXE            sel -t -v '/vTU/out'$NROUT'/codec/acodec'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecVbitrate=`$XMLEXE        sel -t -v '/vTU/out'$NROUT'/codec/vbitrate'    $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
+    rtspInIp=`$XMLEXE             sel -t -v '/vTU/in/rtsp/ip'                    $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspInPort=`$XMLEXE           sel -t -v '/vTU/in/rtsp/port'                  $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspInStream=`$XMLEXE         sel -t -v '/vTU/in/rtsp/stream'                $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspInTimeout=`$XMLEXE        sel -t -v '/vTU/in/rtsp/timeout'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspOutIp=`$XMLEXE            sel -t -v '/vTU/out'$NROUT'/rtsp/ip'           $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspOutPort=`$XMLEXE          sel -t -v '/vTU/out'$NROUT'/rtsp/port'         $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspOutStream=`$XMLEXE        sel -t -v '/vTU/out'$NROUT'/rtsp/stream'       $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    localInStream=`$XMLEXE        sel -t -v '/vTU/in/local/stream'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    localOutStream=`$XMLEXE       sel -t -v '/vTU/out'$NROUT'/local/stream'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    localOutOverWr=`$XMLEXE       sel -t -v '/vTU/out'$NROUT'/local/overwrite'   $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecFin=`$XMLEXE             sel -t -v '/vTU/in/codec/container'            $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecVin=`$XMLEXE             sel -t -v '/vTU/in/codec/vcodec'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecAin=`$XMLEXE             sel -t -v '/vTU/in/codec/acodec'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecFout=`$XMLEXE            sel -t -v '/vTU/out'$NROUT'/codec/container'   $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecVout=`$XMLEXE            sel -t -v '/vTU/out'$NROUT'/codec/vcodec'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecAout=`$XMLEXE            sel -t -v '/vTU/out'$NROUT'/codec/acodec'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecVbitrate=`$XMLEXE        sel -t -v '/vTU/out'$NROUT'/codec/vbitrate'    $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
     codecAbitrate=`$XMLEXE        sel -t -v '/vTU/out'$NROUT'/codec/abitrate'    $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
 
     codecVinSize=`$XMLEXE         sel -t -v '/vTU/in/codec/vsize'                $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
@@ -145,7 +151,7 @@ do
     echo -e $XMLEXE sel -t -v '/vTU/out'$NROUT'/codec/acodec   ' '\t'$VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA '\t'-\> $codecAout >>      $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
     echo -e $XMLEXE sel -t -v '/vTU/out'$NROUT'/codec/vbitrate ' '\t'$VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA '\t'-\> $codecVbitrate >>  $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
     echo -e $XMLEXE sel -t -v '/vTU/out'$NROUT'/codec/abitrate ' '\t'$VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA '\t'-\> $codecAbitrate >>  $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
-	
+
     echo -e $XMLEXE sel -t -v '/vTU/in/codec/vsize '        '\t'$VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA '\t'-\> $codecVinSize >>  $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
     echo -e $XMLEXE sel -t -v '/vTU/out'$NROUT'/codec/vsize '       '\t'$VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA '\t'-\> $codecVoutSize >>  $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
     echo -e $XMLEXE sel -t -v '/vTU/out'$NROUT'/codec/vsizewidth '  '\t'$VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA '\t'-\> $codecVoutSizeWidth >>  $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
@@ -153,27 +159,27 @@ do
     echo -e $XMLEXE sel -t -v '/vTU/out'$NROUT'/codec/vframerate '  '\t'$VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA '\t'-\> $codecVframerate >>  $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
     echo -e $XMLEXE sel -t -v '/vTU/out'$NROUT'/codec/asamplerate ' '\t'$VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA '\t'-\> $codecAsamplerate >>  $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
     echo -e $XMLEXE sel -t -v '/vTU/out'$NROUT'/codec/achannels '   '\t'$VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA '\t'-\> $codecAchannels >>  $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
-	
+
 
   elif [ "$XMLEXE" == xmllint ]
   then
-    rtspInIp=`$XMLEXE            -xpath '/vTU/in/rtsp/ip/text()'                    $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspInPort=`$XMLEXE          -xpath '/vTU/in/rtsp/port/text()'                  $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspInStream=`$XMLEXE        -xpath '/vTU/in/rtsp/stream/text()'                $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspInTimeout=`$XMLEXE       -xpath '/vTU/in/rtsp/timeout/text()'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspOutIp=`$XMLEXE           -xpath '/vTU/out'$NROUT'/rtsp/ip/text()'           $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspOutPort=`$XMLEXE         -xpath '/vTU/out'$NROUT'/rtsp/port/text()'         $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    rtspOutStream=`$XMLEXE       -xpath '/vTU/out'$NROUT'/rtsp/stream/text()'       $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    localInStream=`$XMLEXE       -xpath '/vTU/in/local/stream/text()'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    localOutStream=`$XMLEXE      -xpath '/vTU/out'$NROUT'/local/stream/text()'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    localOutOverWr=`$XMLEXE      -xpath '/vTU/out'$NROUT'/local/overwrite/text()'   $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecFin=`$XMLEXE            -xpath '/vTU/in/codec/container/text()'            $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecVin=`$XMLEXE            -xpath '/vTU/in/codec/vcodec/text()'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecAin=`$XMLEXE            -xpath '/vTU/in/codec/acodec/text()'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecFout=`$XMLEXE           -xpath '/vTU/out'$NROUT'/codec/container/text()'   $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecVout=`$XMLEXE           -xpath '/vTU/out'$NROUT'/codec/vcodec/text()'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecAout=`$XMLEXE           -xpath '/vTU/out'$NROUT'/codec/acodec/text()'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
-    codecVbitrate=`$XMLEXE       -xpath '/vTU/out'$NROUT'/codec/vbitrate/text()'    $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA` 
+    rtspInIp=`$XMLEXE            -xpath '/vTU/in/rtsp/ip/text()'                    $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspInPort=`$XMLEXE          -xpath '/vTU/in/rtsp/port/text()'                  $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspInStream=`$XMLEXE        -xpath '/vTU/in/rtsp/stream/text()'                $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspInTimeout=`$XMLEXE       -xpath '/vTU/in/rtsp/timeout/text()'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspOutIp=`$XMLEXE           -xpath '/vTU/out'$NROUT'/rtsp/ip/text()'           $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspOutPort=`$XMLEXE         -xpath '/vTU/out'$NROUT'/rtsp/port/text()'         $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    rtspOutStream=`$XMLEXE       -xpath '/vTU/out'$NROUT'/rtsp/stream/text()'       $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    localInStream=`$XMLEXE       -xpath '/vTU/in/local/stream/text()'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    localOutStream=`$XMLEXE      -xpath '/vTU/out'$NROUT'/local/stream/text()'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    localOutOverWr=`$XMLEXE      -xpath '/vTU/out'$NROUT'/local/overwrite/text()'   $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecFin=`$XMLEXE            -xpath '/vTU/in/codec/container/text()'            $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecVin=`$XMLEXE            -xpath '/vTU/in/codec/vcodec/text()'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecAin=`$XMLEXE            -xpath '/vTU/in/codec/acodec/text()'               $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecFout=`$XMLEXE           -xpath '/vTU/out'$NROUT'/codec/container/text()'   $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecVout=`$XMLEXE           -xpath '/vTU/out'$NROUT'/codec/vcodec/text()'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecAout=`$XMLEXE           -xpath '/vTU/out'$NROUT'/codec/acodec/text()'      $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
+    codecVbitrate=`$XMLEXE       -xpath '/vTU/out'$NROUT'/codec/vbitrate/text()'    $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
     codecAbitrate=`$XMLEXE       -xpath '/vTU/out'$NROUT'/codec/abitrate/text()'    $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
 
     codecVinSize=`$XMLEXE        -xpath '/vTU/in/codec/vsize/text()'                $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA`
@@ -214,16 +220,16 @@ do
     echo "$XMLEXE Not implemented yet " >> $VTUDIR/$VTUERR/$TODAY/$XMLFILE.$NR.$DATA.log
   fi
 
-  if [ "$rtspInPort" != "" ] 
-  then 
-    if [ "$rtspInStream" != "" ] 
-    then 
+  if [ "$rtspInPort" != "" ]
+  then
+    if [ "$rtspInStream" != "" ]
+    then
       INCMD="-i rtsp://$VTUBEARIP:$rtspInPort/$rtspInStream"
     else
       INCMD="-i rtsp://$VTUBEARIP:$rtspInPort"
     fi
-    if [ "$rtspInTimeout" != "" ] 
-    then 
+    if [ "$rtspInTimeout" != "" ]
+    then
       INCMD="-rtsp_flags listen -timeout "$rtspInTimeout" "$INCMD
       INTIMEOUT=$rtspInTimeout
     else
@@ -238,8 +244,8 @@ do
 
   if [ "$rtspOutIp" != "" ] && [ "$rtspOutPort" != "" ]
   then
-    if [ "$rtspOutStream" != "" ] 
-    then 
+    if [ "$rtspOutStream" != "" ]
+    then
       OUTCMD="-f rtsp rtsp://$rtspOutIp:$rtspOutPort/$rtspOutStream"
       TMPOUTCMD="$VTUDIR/$VTUTMP/$localOutStream"
     else
@@ -247,10 +253,10 @@ do
       TMPOUTCMD="$VTUDIR/$VTUTMP/$rtspOutPort"
     fi
   fi
-  
+
   if [ "$localOutStream" != "" ]
   then
-    if [ "$localOutOverWr" == "y" ] 
+    if [ "$localOutOverWr" == "y" ]
     then
       TMPOUTCMD="$VTUDIR/$VTUTMP/$localOutStream"
       OUTCMD="$VTUDIR/$VTUOUT/$TODAY/$localOutStream"
@@ -296,7 +302,7 @@ do
   else
     OUTACODEC="-an"
   fi
- 
+
   if [ "$codecVout" != "" ]
   then
     if   [ "$codecVout" == "rawvideo" ];   then OUTVCODEC="-vcodec rawvideo"
@@ -384,8 +390,8 @@ do
     OUTVCODEC="-vn"
   fi
 
-  #if [ "$OUTACODEC" == "-an" ] && [ "$OUTVCODEC" == "GPU" ] 
-  #then 
+  #if [ "$OUTACODEC" == "-an" ] && [ "$OUTVCODEC" == "GPU" ]
+  #then
   #  OUTCMD=`echo $OUTCMD | tr -d "\-y "`
   #fi
 
@@ -397,7 +403,7 @@ do
 
   if [ "$codecVinSize" != "" ];      then    VINSIZE="-s $codecVinSize"
   fi
-  
+
   if [ "$codecVoutSize" != "" ];           then VOUTSIZE="-s $codecVoutSize"
   else
     if [ "$codecVoutSizeWidth" == "" ];    then VOUTSIZE=""; VOUTSIZEW=""
@@ -412,33 +418,33 @@ do
   fi
 
   if [ "$codecVframerate" != "" ];   then    VFRAMERATE="-r $codecVframerate"
-  fi  
-  
+  fi
+
   if [ "$codecAsamplerate" != "" ];  then    ASAMPLERATE="-ar $codecAsamplerate"
   fi
-  
+
   if [ "$codecAchannels" != "" ];    then    ACHANNELS="-ac $codecAchannels"
   fi
-  
-  if [ "$rtspInPort" != "" ] || [ "$localInStream" != "" ] 
-  then 
-    if [ "$OUTVCODEC" != "GPU" ] 
+
+  if [ "$rtspInPort" != "" ] || [ "$localInStream" != "" ]
+  then
+    if [ "$OUTVCODEC" != "GPU" ]
     then
       if [ "$localOutStream" != "" ]
       then
-        vTUlogger $VTUEXE $INCMD -strict -2 $OUTFCODEC $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE -y $TMPOUTCMD 
-        $VTUEXE $INCMD -strict -2 $OUTFCODEC $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE -y $TMPOUTCMD 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log 
+        vTUlogger $VTUEXE $INCMD -strict -2 $OUTFCODEC $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE -y $TMPOUTCMD
+        $VTUEXE $INCMD -strict -2 $OUTFCODEC $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE -y $TMPOUTCMD 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
         vTUlogger mv $TMPOUTCMD $OUTCMD
         mv $TMPOUTCMD $OUTCMD >> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
       else
-        #vTUlogger $VTUEXE $INCMD -strict -2 $OUTFCODEC $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD    
-        #$VTUEXE $INCMD -strict -2 $OUTFCODEC $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log 
+        #vTUlogger $VTUEXE $INCMD -strict -2 $OUTFCODEC $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD
+        #$VTUEXE $INCMD -strict -2 $OUTFCODEC $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
         TMPF=`echo $VTUDIR/$VTUTMP/$RANDOM`
-        vTUlogger nohup $VTUEXE $INCMD -y -strict -2 -f avi -codec copy $TMPF    
-        nohup $VTUEXE $INCMD -y -strict -2 -f avi -codec copy $TMPF 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.INrtsp.log& 
+        vTUlogger nohup $VTUEXE $INCMD -y -strict -2 -f avi -codec copy $TMPF
+        nohup $VTUEXE $INCMD -y -strict -2 -f avi -codec copy $TMPF 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.INrtsp.log&
         if [ "$rtspOutIp" != "" ] && [ "$rtspOutPort" != "" ]
         then
-          to=0; 
+          to=0;
           while [ ! -e $TMPF ] && [ $to -ne $INTIMEOUT ]
           do
             let to=$to+1
@@ -448,8 +454,8 @@ do
           then
           #sleep 2
           sleep 10
-            vTUlogger $VTUEXE -re -i $TMPF -strict -2 $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD 
-            $VTUEXE -re -i $TMPF -strict -2 $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log 
+            vTUlogger $VTUEXE -re -i $TMPF -strict -2 $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD
+            $VTUEXE -re -i $TMPF -strict -2 $OUTVCODEC $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
           fi
           #cp $TMPF $VTUDIR/$VTUTMP/papero
         fi
@@ -464,10 +470,10 @@ do
         vTUlogger $VTUEXE $INCMD -c:v rawvideo -pix_fmt yuv420p $VOUTSIZE -y -f rawvideo $TMPF
         $VTUEXE $INCMD -c:v rawvideo -pix_fmt yuv420p $VOUTSIZE -y -f rawvideo $TMPF 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
 
-# to nvenc 6.0 
+# to nvenc 6.0
         #vTUlogger $NVENCEXE -o $VTUDIR/$VTUTMP/$localOutStream -i $TMPF -size $VOUTSIZEW $VOUTSIZEH -fps 25 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log 1>&2
         #$NVENCEXE -o $VTUDIR/$VTUTMP/$localOutStream -i $TMPF -size $VOUTSIZEW $VOUTSIZEH -fps 25 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log 1>&2
-# to nvenc 4.0 
+# to nvenc 4.0
         cp $VTUDIR/$VTUSYS/defaultNvEnc.conf $TMPF.conf
         sed -i "s/__WIDTH__/$VOUTSIZEW/g" $TMPF.conf
         sed -i "s/__HEIGHT__/$VOUTSIZEH/g" $TMPF.conf
@@ -476,20 +482,20 @@ do
         vTUlogger $NVENCEXE -configfile=$TMPF.conf -outfile=$VTUDIR/$VTUTMP/$localOutStream >> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log 1>&2
         $NVENCEXE -configfile=$TMPF.conf -outfile=$VTUDIR/$VTUTMP/$localOutStream 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log 1>&2
 
-        vTUlogger $VTUEXE $INCMD -vn $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE -strict -2 -f $codecAout $VTUDIR/$VTUTMP/$localOutStream.audio 
+        vTUlogger $VTUEXE $INCMD -vn $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE -strict -2 -f $codecAout $VTUDIR/$VTUTMP/$localOutStream.audio
         #$NVENCEXE $INCMD -vn $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE -strict -2 -f $codecAout $VTUDIR/$VTUTMP/$localOutStream.audio 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
         $VTUEXE $INCMD -vn $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE -strict -2 -f $codecAout $VTUDIR/$VTUTMP/$localOutStream.audio 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
 
         vTUlogger "$VTUEXE -i $VTUDIR/$VTUTMP/$localOutGpu0Stream -i $VTUDIR/$VTUTMP/$localOutStream.audio -c copy -shortest $OUTCMD"
         $VTUEXE -i $VTUDIR/$VTUTMP/$localOutGpu0Stream -i $VTUDIR/$VTUTMP/$localOutStream.audio -c copy -shortest $OUTCMD 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
-        
+
         rm -f $TMPF
         rm -f $TMPF.conf
         rm -f $VTUDIR/$VTUTMP/$localOutGpu0Stream
         rm -f $VTUDIR/$VTUTMP/$localOutStream.audio
       #else
-      #  vTUlogger $NVENCEXE $INCMD -vcodec h264 $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD    
-      #  $NVENCEXE $INCMD -strict -2 -vcodec h264 $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log 
+      #  vTUlogger $NVENCEXE $INCMD -vcodec h264 $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD
+      #  $NVENCEXE $INCMD -strict -2 -vcodec h264 $VOUTSIZE $VFRAMERATE $VBITRATE $OUTACODEC $ASAMPLERATE $ACHANNELS $ABITRATE $OUTCMD 2>> $VTUDIR/$VTULOG/$TODAY/$XMLFILE.$NR.$DATA.log
       #fi
     fi
   else
@@ -500,5 +506,3 @@ do
 done
 
 mv $VTUDIR/$VTURUN/$XMLFILE.$NR.$DATA $VTUDIR/$VTUDONE/$TODAY/$XMLFILE.$NR.$DATA
-
-

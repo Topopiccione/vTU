@@ -1,5 +1,10 @@
-#!/bin/bash 
-## 
+#!/bin/bash
+#
+# virtual Transcoding Unit
+# Author of this file: Marco Beccari, Alessandro Petrini
+# Italtel and Universita' degli studi di Milano, 2015-6
+#
+##
 #
 # vTUstop
 #
@@ -9,9 +14,9 @@
 source /vTU/sys/vTUsetting
 
 pidDaemon=$(pgrep $VTUDAEMON)
-if [ "$pidDaemon" == "" ] 
+if [ "$pidDaemon" == "" ]
 then
-  if [ ! -e $VTUDIR/$VTUSYS/$VTUREADY ] 
+  if [ ! -e $VTUDIR/$VTUSYS/$VTUREADY ]
   then
     vTUlogger "I am already stopped !!"
     echo "I am already stopped !!"
@@ -21,13 +26,13 @@ then
     rm -f $VTUDIR/$VTUSYS/$VTUREADY
   fi
 else
-  for pidd in $pidDaemon 
-  do 
+  for pidd in $pidDaemon
+  do
     kill $pidd
-    vTUlogger "Killing $VTUDAEMON (pid $pidd)" 
+    vTUlogger "Killing $VTUDAEMON (pid $pidd)"
   done
   if [ ! -e $VTUDIR/$VTUSYS/$VTUREADY ]
-  then  
+  then
     vTUlogger "I am already stopped !!"
     echo "I am already stopped !!"
   else
@@ -39,21 +44,16 @@ else
 fi
 
 pidChecker=$(pgrep $VTUCHECKER)
-if [ "$pidChecker" == "" ] 
+if [ "$pidChecker" == "" ]
 then
   vTUlogger $VTUCHECKER" already stopped !!"
   echo $VTUCHECKER" already stopped !!"
 else
-  for pidd in $pidChecker 
-  do 
+  for pidd in $pidChecker
+  do
     kill $pidd
-    vTUlogger "Killing $VTUCHECKER (pid $pidd)" 
+    vTUlogger "Killing $VTUCHECKER (pid $pidd)"
   done
   vTUlogger $VTUCHECKER" Stopped .... "
   echo $VTUCHECKER " Stopped .... "
 fi
-
-
-
-
-

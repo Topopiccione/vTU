@@ -1,7 +1,11 @@
 #
-## 
+# virtual Transcoding Unit
+# Author of this file: Marco Beccari
+# Italtel and Universita' degli studi di Milano, 2015-6
 #
-# vTUsetting  
+##
+#
+# vTUsetting
 #
 ##
 source ~/.bashrc
@@ -62,4 +66,3 @@ echo -e '['$(date +'%a %Y-%m-%d %H:%M:%S')'] vTU ('$0') - ' $* >> $VTUDIR/$VTUSY
 
 LIBCUDA=/usr/local/cuda/lib64
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBCUDA:/usr/local/lib
-

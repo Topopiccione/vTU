@@ -1,5 +1,10 @@
-#!/bin/bash 
-## 
+#!/bin/bash
+#
+# virtual Transcoding Unit
+# Author of this file: Marco Beccari, Alessandro Petrini
+# Italtel and Universita' degli studi di Milano, 2015-6
+#
+##
 #
 # vTUrestart
 #
@@ -15,10 +20,9 @@ sleep 1
 
 
 pidDaemon=$(pgrep $VTUDAEMON)
-if [ "$pidDaemon" == "" ] 
+if [ "$pidDaemon" == "" ]
 then
   exit 1
 else
   exit 0
 fi
-

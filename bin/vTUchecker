@@ -1,5 +1,10 @@
-#!/bin/bash 
-## 
+#!/bin/bash
+#
+# virtual Transcoding Unit
+# Author of this file: Marco Beccari, Alessandro Petrini
+# Italtel and Universita' degli studi di Milano, 2015-6
+#
+##
 #
 # vTUcheck
 #
@@ -13,10 +18,10 @@ echo "Starting ... "
 
 while true
 do
-  if [ -e $VTUDIR/$VTUSYS/$VTUREADY ] 
+  if [ -e $VTUDIR/$VTUSYS/$VTUREADY ]
   then
     pidDaemon=$(pgrep $VTUDAEMON)
-    if [ "$pidDaemon" == "" ] 
+    if [ "$pidDaemon" == "" ]
     then
       let ritento=$ritento+1
       if [ $ritento -eq 3 ]
@@ -27,8 +32,8 @@ do
         #bash -x $VTUDIR/$VTUBIN/$VTUDAEMON
         vTUlogger "Starting again .... "
         echo "Starting again ... "
-      fi  
-      sleep 1 
+      fi
+      sleep 1
     else
       ritento=0
       sleep 3

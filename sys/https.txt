@@ -1,9 +1,15 @@
+#
+# virtual Transcoding Unit
+# Author of this file: Marco Beccari
+# Italtel and Universita' degli studi di Milano, 2015-6
+#
+
 # Hiawatha main configuration file
 #
 
 # VARIABLES
 # With 'set', you can declare a variable. Make sure the name of the
-# variable doesn't conflict with any of the configuration options. The 
+# variable doesn't conflict with any of the configuration options. The
 # variables are case-sensitive and cannot be redeclared.
 #
 #set LOCALHOST = 127.0.0.0/8
@@ -129,7 +135,7 @@ Directory {
 	Path = /vTU/input/
         AccessList = allow all
         AlterList = allow all
-        ShowIndex = /usr/local/etc/hiawatha/index.xslt 
+        ShowIndex = /usr/local/etc/hiawatha/index.xslt
 	ExecuteCGI = no
 	UploadSpeed = 10,2
 }
@@ -137,7 +143,7 @@ Directory {
 	Path = /vTU/spool/
         AccessList = allow all
         AlterList = allow all
-        ShowIndex = /usr/local/etc/hiawatha/index.xslt 
+        ShowIndex = /usr/local/etc/hiawatha/index.xslt
 	ExecuteCGI = no
 	UploadSpeed = 10,2
 }

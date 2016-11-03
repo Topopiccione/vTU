@@ -1,3 +1,9 @@
+#
+# virtual Transcoding Unit
+# Author of this file: Marco Beccari
+# Italtel and Universita' degli studi di Milano, 2015-6
+#
+
 /vTU/sys/vTUstart.log /vTU/sys/vTUdaemon.log {
     daily
     rotate 7

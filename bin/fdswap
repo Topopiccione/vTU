@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # virtual Transcoding Unit
-# by Marco Beccari, Alessandro Petrini 2015-6
-# Italtel and Universita' degli studi di Milano
+# Author of this file: Marco Beccari, Alessandro Petrini
+# Italtel and Universita' degli studi di Milano, 2015-6
 #
 # fdswap
 #
