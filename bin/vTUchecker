@@ -1,0 +1,40 @@
+#!/bin/bash 
+## 
+#
+# vTUcheck
+#
+##
+
+#source /home/alevirt/Virt/vTU/sys/vTUsetting
+source /vTU/sys/vTUsetting
+ritento=0
+vTUlogger "Starting ... "
+echo "Starting ... "
+
+while true
+do
+  if [ -e $VTUDIR/$VTUSYS/$VTUREADY ] 
+  then
+    pidDaemon=$(pgrep $VTUDAEMON)
+    if [ "$pidDaemon" == "" ] 
+    then
+      let ritento=$ritento+1
+      if [ $ritento -eq 3 ]
+      then
+        ritento=0
+        #nohup $VTUDIR/$VTUBIN/$VTUDAEMON > /dev/null &
+        nohup $VTUDIR/$VTUBIN/$VTUDAEMON >> $VTUDIR/$VTUSYS/vTUstart.log 2>&1 &
+        #bash -x $VTUDIR/$VTUBIN/$VTUDAEMON
+        vTUlogger "Starting again .... "
+        echo "Starting again ... "
+      fi  
+      sleep 1 
+    else
+      ritento=0
+      sleep 3
+    fi
+  else
+    ritento=0
+    sleep 3
+  fi
+done

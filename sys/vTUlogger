@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source /vTU/sys/vTUsetting
+
+if [ "$1" == "" ]
+then 
+  cat $VTUDIR/$VTUSYS/$VTULOGGER
+else
+  tail -n $1 $VTUDIR/$VTUSYS/$VTULOGGER
+fi
+

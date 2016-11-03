@@ -1,0 +1,21 @@
+#!/bin/bash 
+## 
+#
+# vTUstop
+#
+##
+
+#source /home/alevirt/Virt/vTU/sys/vTUsetting
+source /vTU/sys/vTUsetting
+
+rm -f `find $VTUDIR/$VTULOG/ -type f `
+rm -f `find $VTUDIR/$VTUDONE/ -type f `
+rm -f `find $VTUDIR/$VTUUNDONE/ -type f ` 
+rm -f `find $VTUDIR/$VTUERR/ -type f `
+rm -f `find $VTUDIR/$VTURUN/ -type f `
+rm -f `find $VTUDIR/$VTUIN/ -type f `
+rm -f `find $VTUDIR/$VTUSPOOL/ -type f `
+rm -f `find $VTUDIR/$VTUOUT/ -type f `
+rm -f `find $VTUDIR/$VTUTMP/ -type f `
+
+

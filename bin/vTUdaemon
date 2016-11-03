@@ -1,0 +1,226 @@
+#!/bin/bash
+#
+# vTUdaemon  
+#
+##
+
+#source $VTUBASEDIR/sys/vTUsetting
+#source /home/alevirt/Virt/vTU/sys/vTUsetting
+source /vTU/sys/vTUsetting
+
+
+NR=0
+TODAY=`date +%Y%m%d`
+POXI=`date +%Y.%m.%d`
+DATA=
+INFLUXDB_COUNT=$INFLUXDB_TIMER
+INFLUXDB_STATUS=2
+
+which $XMLEXE > /dev/null
+if [ $? -eq 1 ]
+then 
+  vTUlogger "$XMLEXE not found !! " `date +%Y.%m.%d-%H.%M.%S`
+  exit 501
+fi
+
+which $VTUEXE > /dev/null
+if [ $? -eq 1 ]
+then 
+  which $VTUEXE > /dev/null
+  if [ $? -eq 1 ]
+  then 
+    vTUlogger "$VTUEXE and $VTUEXE not found !! " `date +%Y.%m.%d-%H.%M.%S`
+    exit 501
+  fi
+fi
+which $VTUEXE > /dev/null
+if [ $? -eq 1 ]
+then 
+  which $VTUEXE > /dev/null
+  if [ $? -eq 1 ]
+  then 
+    vTUlogger "$VTUEXE and $VTUEXE not found !! " `date +%Y.%m.%d-%H.%M.%S`
+    exit 501
+  fi
+fi
+
+vTUlogger "Starting vTUdemon " `date +%Y.%m.%d-%H.%M.%S`
+
+mkdir $VTUDIR/$VTULOG/$POXI 2> /dev/null
+mkdir $VTUDIR/$VTUERR/$POXI 2> /dev/null
+mkdir $VTUDIR/$VTUDONE/$POXI 2> /dev/null
+mkdir $VTUDIR/$VTUUNDONE/$POXI 2> /dev/null
+mkdir $VTUDIR/$VTUOUT/$POXI 2> /dev/null
+rm -f $VTUDIR/$VTULOG/lastest 2> /dev/null 
+rm -f $VTUDIR/$VTUERR/lastest 2> /dev/null 
+rm -f $VTUDIR/$VTUDONE/lastest 2> /dev/null 
+rm -f $VTUDIR/$VTUUNDONE/lastest 2> /dev/null 
+rm -f $VTUDIR/$VTUOUT/lastest 2> /dev/null 
+ln -s $VTUDIR/$VTULOG/$POXI    $VTUDIR/$VTULOG/lastest 2> /dev/null
+ln -s $VTUDIR/$VTUERR/$POXI    $VTUDIR/$VTUERR/lastest 2> /dev/null
+ln -s $VTUDIR/$VTUDONE/$POXI   $VTUDIR/$VTUDONE/lastest 2> /dev/null
+ln -s $VTUDIR/$VTUUNDONE/$POXI $VTUDIR/$VTUUNDONE/lastest 2> /dev/null
+ln -s $VTUDIR/$VTUOUT/$POXI    $VTUDIR/$VTUOUT/lastest 2> /dev/null
+
+# move filexml unexpected into spool directory and purge it 
+mv $VTUDIR/$VTUSPOOL/* $VTUDIR/$VTUUNDONE/$POXI/. 2> /dev/null
+rm -f $VTUDIR/$VTUSPOOL/*
+rm -f $VTUDIR/$VTURUN/*
+rm -f $VTUDIR/$VTUTMP/*
+while true
+do
+
+  pidChecker=$(pgrep $VTUCHECKER)
+  if [ "$pidChecker" == "" ]
+  then
+    #nohup $VTUDIR/$VTUBIN/$VTUDAEMON > /dev/null &
+    nohup $VTUDIR/$VTUBIN/$VTUCHECKER >> $VTUDIR/$VTUSYS/vTUstart.log 2>&1 &
+  fi
+
+  if [ $TODAY -lt `date +%Y%m%d` ]
+  then 
+    NR=0
+    TODAY=`date +%Y%m%d`
+    POXI=`date +%Y.%m.%d`
+    mkdir $VTUDIR/$VTULOG/$POXI
+    mkdir $VTUDIR/$VTUERR/$POXI
+    mkdir $VTUDIR/$VTUDONE/$POXI
+    mkdir $VTUDIR/$VTUUNDONE/$POXI
+    mkdir $VTUDIR/$VTUOUT/$POXI
+
+    find  $VTUDIR/$VTULOG/ -type d -mtime +15 -exec rm -rf "{}" \;
+    find  $VTUDIR/$VTUERR/ -type d -mtime +15 -exec rm -rf "{}" \;
+    find  $VTUDIR/$VTUDONE/ -type d -mtime +15 -exec rm -rf "{}" \;
+    find  $VTUDIR/$VTUUNDONE/ -type d -mtime +15 -exec rm -rf "{}" \;
+    find  $VTUDIR/$VTUOUT/ -type d -mtime +15 -exec rm -rf "{}" \;
+
+    rm -f $VTUDIR/$VTULOG/lastest 2> /dev/null 
+    rm -f $VTUDIR/$VTUERR/lastest 2> /dev/null 
+    rm -f $VTUDIR/$VTUDONE/lastest 2> /dev/null 
+    rm -f $VTUDIR/$VTUUNDONE/lastest 2> /dev/null 
+    rm -f $VTUDIR/$VTUOUT/lastest 2> /dev/null 
+    ln -s $VTUDIR/$VTULOG/$POXI    $VTUDIR/$VTULOG/lastest 2> /dev/null
+    ln -s $VTUDIR/$VTUERR/$POXI    $VTUDIR/$VTUERR/lastest 2> /dev/null
+    ln -s $VTUDIR/$VTUDONE/$POXI   $VTUDIR/$VTUDONE/lastest 2> /dev/null
+    ln -s $VTUDIR/$VTUUNDONE/$POXI $VTUDIR/$VTUUNDONE/lastest 2> /dev/null
+    ln -s $VTUDIR/$VTUOUT/$POXI    $VTUDIR/$VTUOUT/lastest 2> /dev/null
+  fi
+
+  for xmlFile in `ls $VTUDIR/$VTUSPOOL`
+  do
+    #echo $PATH 
+    #/usr/sbin/lsof $VTUDIR/$VTUSPOOL/$xmlFile 
+    lsof $VTUDIR/$VTUSPOOL/$xmlFile > /dev/null
+    if [ $? -ne 0 ]
+    then
+	if [ $XMLEXE == xmlstatlet ]
+	then
+      		$XMLEXE val $VTUDIR/$VTUSPOOL/$xmlFile > /dev/null
+	elif [ $XMLEXE == xmllint ]
+        then
+		$XMLEXE --noout $VTUDIR/$VTUSPOOL/$xmlFile > /dev/null
+ 	fi
+
+     if [ $? -eq 0 ]
+       then
+        let NR=$NR+1
+        DATA=`date +%Y.%m.%d-%H.%M.%S`
+        nohup $VTUDIR/$VTUBIN/vTUrunner $xmlFile $NR $DATA $POXI & 
+        #bash -x  $VTUDIR/$VTUBIN/vTUrunner $xmlFile $NR $DATA $POXI  
+       else
+        DATA=`date +%Y.%m.%d-%H.%M.%S`
+        mv $VTUDIR/$VTUSPOOL/$xmlFile $VTUDIR/$VTUERR/$POXI/$xmlFile.$DATA
+     fi
+    fi
+  done
+
+  if [ $INFLUXDB_COUNT -eq 0 ]
+  then 
+    INFLUXDB_COUNT=$INFLUXDB_TIMER
+
+    curl -s --head http://$INFLUXDB_SERVER | grep "200 OK"
+    if [ $? -eq 0 ] 
+    then
+      if [ $INFLUXDB_STATUS -eq 1 ] || [ $INFLUXDB_STATUS -eq 2 ]
+      then
+        INFLUXDB_STATUS=0
+        vTUlogger "InfluxDB server $INFLUXDB_SERVER is up " `date +%Y.%m.%d-%H.%M.%S`
+      fi
+
+      TEMPGPU=($(nvidia-smi -q -d TEMPERATURE | grep Current | awk {'print $5'}))
+      LOADGPU=($(nvidia-smi -q -d UTILIZATION | grep Gpu | awk {'print $3'}))
+      NRGPU=`nvidia-smi -L | wc -l`
+      for nGPU in $(seq 0 $NRGPU)
+      do
+        if [ $nGPU -eq $NRGPU ]; then continue; fi;
+if [ false ];then
+        curl -i -XPOST 'http://'$INFLUXDB_REPODB'/write?db=vtu_gpu' --data-binary 'tempGpu,gpu=gpu'$nGPU',server=emp373 value='${TEMPGPU[$nGPU]}''
+        curl -i -XPOST 'http://'$INFLUXDB_REPODB'/write?db=vtu_gpu' --data-binary 'loadCpu,gpu=gpu'$nGPU',server=emp373 value='${LOADGPU[$nGPU]}''
+fi
+      done
+
+      LOADCPU=`uptime | sed 's/, / /g' `
+      LOADCPU01=`echo ${LOADCPU#*\average:} | awk {'print $1'} | sed 's/,/./g'`
+      LOADCPU05=`echo ${LOADCPU#*\average:} | awk {'print $2'} | sed 's/,/./g'`
+      LOADCPU15=`echo ${LOADCPU#*\average:} | awk {'print $3'} | sed 's/,/./g'`
+if [ false ];then
+      curl -i -XPOST 'http://'$INFLUXDB_REPODB'/write?db=vtu_gpu' --data-binary 'loadCpu,cpu=aver01,server=emp373 value='$LOADCPU01'
+loadCpu,cpu=aver05,server=emp373 value='$LOADCPU05'
+loadCpu,cpu=aver15,server=emp373 value='$LOADCPU15''
+fi
+
+      LOADCPU=($(mpstat 1 1  | awk '/Average:/ && $2 {print $3}' |sed 's/,/./g'))
+if [ false ];then
+      curl -i -XPOST 'http://'$INFLUXDB_REPODB'/write?db=vtu_gpu' --data-binary 'loadCpu,cpu=cpuSys,server=emp373 value='$LOADCPU''
+fi
+      NRCPU=`grep processor /proc/cpuinfo | tail -n 1 | awk {'print $3'}`
+      loads=($(mpstat -P ALL 1 1 | awk '/Average:/ && $2 ~ /[0-9]/ {print $3}'|sed 's/,/./g'))
+      for nCPU in $(seq 0 $NRCPU)
+      do 
+if [ false ];then
+        curl -i -XPOST 'http://'$INFLUXDB_REPODB'/write?db=vtu_gpu' --data-binary 'loadCpu,cpu=cpu'$nCPU',server=emp373 value='${loads[$nCPU]}''
+fi
+      done
+
+      NTUCPU=0
+      TMPFPS=0
+      TMPKBS=0
+      NTUGPU=0
+      pushd $VTUDIR/$VTURUN
+      for RUNNING in `find . -type f`
+      do
+        #let NTUCPU=$NTUCPU+1
+        TMPVAL=`sed -e 's/\x0dframe/\x0aframe/g' -e 's/=/ /g' -e 's/\./ /g' -e 's/kbits\/s/ kbits\/s/g' $VTUDIR/$VTULOG/$POXI/$RUNNING.log | grep frame | tail -n 1 | awk {'print $4" "$14'}` 
+        let TMPFPS=$TMPFPS+`echo $TMPVAL | awk {'print $1'}`
+        let TMPKBS=$TMPKBS+`echo $TMPVAL | awk {'print $2'}`
+      done
+      popd  
+      NTUCPU=`ps -ef | grep $VTUEXE | grep -v grep | wc -l`
+      NTUGPU=`nvidia-smi -q -d PIDS | grep "Process ID" | wc -l`
+
+      /vTU/sys/tnova_send_metric.sh tu_running $NTUCPU
+      /vTU/sys/tnova_send_metric.sh framerate $TMPFPS
+      /vTU/sys/tnova_send_metric.sh bitrate $TMPKBS
+if [ false ]; then
+      curl -i -XPOST 'http://'$INFLUXDB_REPODB'/write?db=vtu_stats' --data-binary 'TUload,server=emp373,param=fps value='$TMPFPS'
+ TUload,server=emp373,param=kbitrate/s value='$TMPKBS'
+ TUload,server=emp373,param=nTUcpu value='$NTUCPU'
+ TUload,server=emp373,param=nTUgpu value='$NTUGPU''
+fi
+    else
+      if [ $INFLUXDB_STATUS -eq 0 ] || [ $INFLUXDB_STATUS -eq 2 ]
+      then
+        INFLUXDB_STATUS=1
+        vTUlogger "InfluxDB server $INFLUXDB_SERVER is down " `date +%Y.%m.%d-%H.%M.%S`
+      fi
+    fi
+    
+  else
+    let INFLUXDB_COUNT=$INFLUXDB_COUNT-1
+  fi
+
+  sleep 1
+
+done
+
+

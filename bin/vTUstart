@@ -1,0 +1,36 @@
+#!/bin/bash 
+## 
+#
+# vTUstart
+#
+##
+
+#source /home/alevirt/Virt/vTU/sys/vTUsetting
+source /vTU/sys/vTUsetting
+
+  pidDaemon=$(pgrep $VTUDAEMON)
+  if [ "$pidDaemon" == "" ] 
+  then
+    #nohup $VTUDIR/$VTUBIN/$VTUDAEMON > /dev/null &
+    nohup $VTUDIR/$VTUBIN/$VTUDAEMON > $VTUDIR/$VTUSYS/vTUstart.log 2>&1 &
+    #bash -x $VTUDIR/$VTUBIN/$VTUDAEMON
+    sleep 1 
+    pidDaemon=$(pgrep $VTUDAEMON)
+    if [ "$pidDaemon" == "" ] 
+    then
+      rm -f $VTUDIR/$VTUSYS/$VTUREADY
+    else
+      vTUlogger "Starting .... "
+      echo "Starting .... "
+      cp $VTUDIR/$VTUSYS/icons/online-server.png $VTUDIR/$VTUSYS/$VTUREADY
+     # touch $VTUDIR/$VTUSYS/$VTUREADY
+    fi
+  else
+    if [ ! -e $VTUDIR/$VTUSYS/$VTUREADY ] 
+    then
+      cp $VTUDIR/$VTUSYS/icons/online-server.png $VTUDIR/$VTUSYS/$VTUREADY
+    fi
+    vTUlogger "I am already started !!"
+    echo "I am already started !!"
+  fi
+

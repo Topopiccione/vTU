@@ -1,0 +1,1 @@
+{"vdu0": "get_attr[vdu1,PublicIp]", "controller": "get_attr[vdu0,PublicIp]"}

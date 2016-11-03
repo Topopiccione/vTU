@@ -1,0 +1,59 @@
+#!/bin/bash 
+## 
+#
+# vTUstop
+#
+##
+
+#source /home/alevirt/Virt/vTU/sys/vTUsetting
+source /vTU/sys/vTUsetting
+
+pidDaemon=$(pgrep $VTUDAEMON)
+if [ "$pidDaemon" == "" ] 
+then
+  if [ ! -e $VTUDIR/$VTUSYS/$VTUREADY ] 
+  then
+    vTUlogger "I am already stopped !!"
+    echo "I am already stopped !!"
+  else
+    vTUlogger "Stopped .... "
+    echo "Stopped .... "
+    rm -f $VTUDIR/$VTUSYS/$VTUREADY
+  fi
+else
+  for pidd in $pidDaemon 
+  do 
+    kill $pidd
+    vTUlogger "Killing $VTUDAEMON (pid $pidd)" 
+  done
+  if [ ! -e $VTUDIR/$VTUSYS/$VTUREADY ]
+  then  
+    vTUlogger "I am already stopped !!"
+    echo "I am already stopped !!"
+  else
+    vTUlogger "Stopped .... "
+    echo "Stopped .... "
+    rm -f $VTUDIR/$VTUSYS/$VTUREADY
+  fi
+
+fi
+
+pidChecker=$(pgrep $VTUCHECKER)
+if [ "$pidChecker" == "" ] 
+then
+  vTUlogger $VTUCHECKER" already stopped !!"
+  echo $VTUCHECKER" already stopped !!"
+else
+  for pidd in $pidChecker 
+  do 
+    kill $pidd
+    vTUlogger "Killing $VTUCHECKER (pid $pidd)" 
+  done
+  vTUlogger $VTUCHECKER" Stopped .... "
+  echo $VTUCHECKER " Stopped .... "
+fi
+
+
+
+
+

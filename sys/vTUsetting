@@ -1,0 +1,65 @@
+#
+## 
+#
+# vTUsetting  
+#
+##
+source ~/.bashrc
+
+#VTUDIR=$VTUBASEDIR
+VTUBASEDIR=/vTU/
+#VTUBASEDIR=/home/alevirt/Virt/vTU/
+#VTUDIR=/home/alevirt/Virt/vTU/
+VTUDIR=/vTU/
+VTUBIN=bin
+VTURUN=vTU/run
+VTUDONE=vTU/done
+VTUUNDONE=vTU/undone
+VTULOG=vTU/log
+VTUERR=vTU/error
+VTUSYS=sys
+VTUTMP=tmp
+VTUSPOOL=vTU/spool
+VTUIN=vTU/input
+VTUOUT=vTU/output
+VTUDAEMON=vTUdaemon
+VTUCHECKER=vTUchecker
+VTURUNNER=vTUrunner
+VTUREADY=IamRunning
+VTULOGGER=vTUdaemon.log
+
+#--------------------------------------------------------------
+XMLEXE=xmllint
+#XMLEXE=xmlstarlet
+
+#--------------------------------------------------------------
+VTUEXE=avconv
+#VTUEXE=avconv
+#VTUEXE=ffmpeg
+
+#--------------------------------------------------------------
+#NVENCEXE=/home/italtel/ffmpeg-2.6.5/ffmpeg
+NVVTUEXE=/usr/local/bin/avconv
+
+#--------------------------------------------------------------
+#NIC=`which ifconfig`
+#VTUBEARIP=138.132.104.86
+#VTUMNGRIP=`$NIC eth0 | awk '/inet /{print substr($2,1)}'`
+#VTUBEARIP=`$NIC eth0 | awk '/inet /{print substr($2,1)}'`
+#VTUMNGRIP=172.16.6.135
+#VTUBEARIP=172.16.6.135
+
+INFLUXDB_SERVER=10.10.1.62:8083
+INFLUXDB_REPODB=10.10.1.62:8086
+#INFLUXDB_TIMER=10
+INFLUXDB_TIMER=5
+
+function vTUlogger()
+{
+#echo -e '['$(date +'%a %Y-%m-%d %H:%M:%S')'] vTU ('$0')\t - ' $* >> $VTUDIR/$VTULOG/$VTULOGGER
+echo -e '['$(date +'%a %Y-%m-%d %H:%M:%S')'] vTU ('$0') - ' $* >> $VTUDIR/$VTUSYS/$VTULOGGER
+}
+
+LIBCUDA=/usr/local/cuda/lib64
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBCUDA:/usr/local/lib
+

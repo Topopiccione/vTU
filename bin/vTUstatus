@@ -1,0 +1,37 @@
+#!/bin/bash 
+##
+#
+# vTUstatus
+#
+##
+
+#source $VTUBASEDIR/sys/vTUsetting
+#source /home/alevirt/Virt/vTU/sys/vTUsetting
+source /vTU/sys/vTUsetting
+
+
+if [ -e $VTUDIR/$VTUSYS/$VTUREADY ] 
+then
+  pidDaemon=$(pgrep $VTUDAEMON)
+  if [ "$pidDaemon" != "" ] 
+  then 
+    echo "vTU daemon is running !!"
+    echo
+    #echo "`ls $VTUDIR/$VTURUN|wc -l` vTU processes working" 
+    echo "`find $VTUDIR/$VTURUN -type  f |  wc -l`  vTU processes works"
+    #echo "`ls $VTUDIR/$VTUDONE|wc -l` vTU processes done" 
+    echo "`find $VTUDIR/$VTUDONE -type  f |  wc -l`  vTU processes done"
+  else
+    echo "vTU daemon is stopped !!"
+  fi
+else
+  echo "vTU daemon is stopped !!"
+fi
+echo
+pidChecker=$(pgrep $VTUCHECKER)
+if [ "$pidChecker" != "" ] 
+then 
+  echo "vTU checker is running !!"
+else
+  echo "vTU checker is stopped !!"
+fi

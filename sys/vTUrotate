@@ -1,0 +1,8 @@
+/vTU/sys/vTUstart.log /vTU/sys/vTUdaemon.log {
+    daily
+    rotate 7
+    missingok
+    dateext
+    copytruncate
+    compress
+}

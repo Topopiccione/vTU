@@ -1,0 +1,222 @@
+# Hiawatha main configuration file
+#
+
+# VARIABLES
+# With 'set', you can declare a variable. Make sure the name of the
+# variable doesn't conflict with any of the configuration options. The 
+# variables are case-sensitive and cannot be redeclared.
+#
+#set LOCALHOST = 127.0.0.0/8
+
+
+# GENERAL SETTINGS
+#
+ServerId = www-data
+#ServerId = 1001
+ConnectionsTotal = 1000
+ConnectionsPerIP = 25
+#SystemLogfile = /usr/local/var/log/hiawatha/system.log
+#GarbageLogfile = /usr/local/var/log/hiawatha/garbage.log
+SystemLogfile = /var/log/hiawatha/system.log
+GarbageLogfile = /var/log/hiawatha/garbage.log
+
+
+# BINDING SETTINGS
+# A binding is where a client can connect to.
+#
+Binding {
+	Port = 80
+#        Interface = 138.132.118.98
+	EnableAlter = yes
+	MaxKeepAlive = 30
+	TimeForRequest = 3,20
+        MaxRequestSize = 16384000
+	MaxUploadSize = 1500
+}
+#
+Binding {
+	Port = 443
+	MaxKeepAlive = 30
+	TimeForRequest = 3,20
+	#TLScertFile = hiawatha.pem
+	SSLcertFile = /usr/local/etc/hiawatha/serverkey.pem
+        #ServerKey = /etc/hiawatha/serverkey.pem
+        #ServerKey = /etc/hiawatha/server.key
+        #UseSSL = yes
+}
+
+# BANNING SETTINGS
+# Deny service to clients who misbehave.
+#
+BanOnGarbage = 300
+BanOnMaxPerIP = 60
+BanOnMaxReqSize = 300
+KickOnBan = yes
+RebanDuringBan = yes
+
+
+# COMMON GATEWAY INTERFACE (CGI) SETTINGS
+# These settings can be used to run CGI applications.
+#
+#CGIhandler = /usr/bin/perl:pl
+#CGIhandler = /usr/bin/php-cgi:php
+#CGIhandler = /usr/bin/python:py
+#CGIhandler = /usr/bin/ruby:rb
+#CGIhandler = /usr/bin/ssi-cgi:shtml
+#CGIextension = cgi
+#
+FastCGIserver {
+	FastCGIid = PHP5
+	ConnectTo = 127.0.0.1:3000
+#	ConnectTo = 138.132.104.86:2005
+#ConnectTo = /php/php-fpm.sock
+	Extension = php,java,html
+}
+
+
+# URL TOOLKIT
+# This URL toolkit rule was made for the Banshee PHP framework, which
+# can be downloaded from http://www.hiawatha-webserver.org/banshee
+#
+#UrlToolkit {
+#	ToolkitID = banshee
+#	RequestURI isfile Return
+#	RequestURI exists Return
+#	Match ^/(css|files|images|js|slimstat)($|/) Return
+#	Match ^/(favicon.ico|robots.txt|sitemap.xml)$ Return
+#	#Match ^/(index.html|index2.html)$ Return
+#	Match .*\?(.*) Rewrite /index.php?$1
+#	Match .* Rewrite /index.php
+#}
+
+#UrlToolkit {
+#	ToolkitID = banshee
+#	#ToolkitID = rpzbasic
+#	Match ^/(css|js|jpg|jpeg|png|ogg|gif|bmp|jar|svg|pdf|zip|swf|apk)($|/) Return
+#	Match ^/(favicon.ico|robots.txt|sitemap.xml)$ Return
+#	Match .*\?(.*) Rewrite /index.java?url=$1
+#	Match .* Rewrite /index.java
+#}
+
+
+# DEFAULT WEBSITE
+# It is wise to use your IP address as the hostname of the default website
+# and give it a blank webpage. By doing so, automated webscanners won't find
+# your possible vulnerable website.
+#
+#Hostname = 127.0.0.1
+#Hostname = vTU-Tnova
+Hostname = vTU, 138.132.118.98
+WebsiteRoot = /vTU
+#WebsiteRoot = /usr/local/var/www/hiawatha
+StartFile = index.html
+#AccessLogfile = /usr/local/var/log/hiawatha/access.log
+#ErrorLogfile = /usr/local/var/log/hiawatha/error.log
+#ExploitLogfile = /usr/local/var/log/hiawatha/exploit.log
+AccessLogfile = /var/log/hiawatha/access.log
+ErrorLogfile = /var/log/hiawatha/error.log
+ExploitLogfile = /var/log/hiawatha/exploit.log
+#ErrorHandler = 404:/error.cgi
+        RequestLimitMask = allow all
+
+# VIRTUAL HOSTS
+# Use a VirtualHost section to declare the websites you want to host.
+#
+#VirtualHost {
+#	Hostname = www.vTU.italtel.com
+#	Hostname = 138.132.104.86
+#	#WebsiteRoot = /var/www/my-domain/public
+#	WebsiteRoot = /vTU
+#	StartFile = index.php
+#	StartFile = index.html
+#	#AccessLogfile = /var/www/my-domain/log/access.log
+#	AccessLogfile = /vTU/vTU/log/access.log
+#	#ErrorLogfile = /var/www/my-domain/log/error.log
+#	ErrorLogfile = /vTU/vTU/log/error.log
+#	TimeForCGI = 5
+#	UseFastCGI = PHP5
+#	UseToolkit = banshee
+#}
+
+
+# DIRECTORY SETTINGS
+# You can specify some settings per directory.
+#
+#Directory {
+#	Path = /vTU/vTU/
+#        #AccessList = allow all
+#        #AlterList = allow all
+#        ShowIndex = /etc/hiawatha/index.xslt 
+#	ExecuteCGI =yes 
+#	UploadSpeed = 10,2
+#}
+Directory {
+	Path = /vTU/vTU/input/
+        AccessList = allow all
+        AlterList = allow all
+        ShowIndex = /etc/hiawatha/index.xslt 
+	ExecuteCGI = no
+	UploadSpeed = 10,2
+}
+Directory {
+	Path = /vTU/spool/
+        AccessList = allow all
+        AlterList = allow all
+        ShowIndex = /etc/hiawatha/index.xslt 
+	ExecuteCGI = yes
+	#ExecuteCGI = no
+	UploadSpeed = 10,2
+}
+Directory {
+	Path = /vTU/run/
+        #AccessList = allow all
+        #AlterList = allow all
+        ShowIndex = /etc/hiawatha/index.xslt 
+	ExecuteCGI = no
+	#UploadSpeed = 10,2
+}
+Directory {
+	Path = /vTU/log/
+        #AccessList = allow all
+        #AlterList = allow all
+        ShowIndex = /etc/hiawatha/index-rev.xslt 
+	ExecuteCGI = no
+	#UploadSpeed = 10,2
+}
+Directory {
+	Path = /vTU/done/
+        #AccessList = allow all
+        #AlterList = allow all
+        ShowIndex = /etc/hiawatha/index-rev.xslt 
+	ExecuteCGI = no
+	#UploadSpeed = 10,2
+}
+Directory {
+	Path = /vTU/undone/
+        #AccessList = allow all
+        #AlterList = allow all
+        ShowIndex = /etc/hiawatha/index-rev.xslt 
+	ExecuteCGI = no
+	#UploadSpeed = 10,2
+}
+Directory {
+	Path = /vTU/error/
+        AccessList = allow all
+        AlterList = allow all
+        ShowIndex = /etc/hiawatha/index-rev.xslt 
+	ExecuteCGI = no
+	#UploadSpeed = 10,2
+}
+#Directory {
+#       DirectoryID = files
+#       Path = /vTU/output/
+#       ShowIndex = yes
+#}
+Directory {
+	Path = /vTU/output/
+        #AccessList = allow all
+        #AlterList = allow all
+        ShowIndex = /etc/hiawatha/index-rev.xslt 
+	ExecuteCGI = no
+	#UploadSpeed = 10,2
+}
