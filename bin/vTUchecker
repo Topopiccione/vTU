@@ -10,7 +10,6 @@
 #
 ##
 
-#source /home/alevirt/Virt/vTU/sys/vTUsetting
 source /vTU/sys/vTUsetting
 ritento=0
 vTUlogger "Starting ... "
