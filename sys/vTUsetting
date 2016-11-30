@@ -11,9 +11,7 @@
 source ~/.bashrc
 
 VTUBASEDIR=/vTU/
-#VTUBASEDIR=/home/alevirt/Virt/vTU/
 VTUDIR=/vTU/
-#VTUDIR=/home/alevirt/Virt/vTU/
 VTUBIN=bin
 VTURUN=vTU/run
 VTUDONE=vTU/done

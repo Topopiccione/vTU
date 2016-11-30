@@ -35,6 +35,7 @@ Also, vTU supports the NVidia hardware h.264 and h.265 NVEnc encoder supplied wi
 
 
 ## Configuration
+vTU can be configured
 
 
 ## Usage
@@ -65,3 +66,18 @@ Jobs are started by uploading an appropriate job xml descriptor into the /vTU/vT
 
 ## Credits
 Pietro Paglierani (Italtel), Marco Beccari (Italtel), Giuliano Grossi (Universita' degli studi di Milano), Federico Pedersini (Universita' degli studi di Milano), Alessandro Petrini (Universita' degli studi di Milano)
+
+## License
+Copyright 2014-2016 Italtel and Universita' degli studi di Milano
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
